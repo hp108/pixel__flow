@@ -8,11 +8,20 @@ import { Webhook } from "svix";
 import { createUser, deleteUser, updateUser } from "@/lib/actions/user.actions";
 
 export async function GET(req: Request){
+    const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
+    console.log("logging in post request")
+    console.log(WEBHOOK_SECRET)
+    if (!WEBHOOK_SECRET) {
+        throw new Error(
+            "Please add WEBHOOK_SECRET from Clerk Dashboard to .env or .env.local"
+        );
+    }
     return NextResponse.json({req})
 }
 
 export async function POST(req: Request) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
+
   const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
   console.log("logging in post request")
 
