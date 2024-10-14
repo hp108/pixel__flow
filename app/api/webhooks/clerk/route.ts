@@ -22,7 +22,7 @@ export async function GET(req: Request){
 export async function POST(req: Request) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
 
-  const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET|| "whsec_VA9wmk0jIxDwDyqkF7oSCTMeh17ocPFj";
+  const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET|| "";
 //   console.log("logging in post request")
 
   if (!WEBHOOK_SECRET) {
