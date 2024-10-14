@@ -8,7 +8,7 @@ import { Webhook } from "svix";
 import { createUser, deleteUser, updateUser } from "@/lib/actions/user.actions";
 
 export async function GET(req: Request){
-    return NextResponse.json({})
+    return NextResponse.json({req})
 }
 
 export async function POST(req: Request) {
