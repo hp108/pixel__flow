@@ -51,10 +51,10 @@ export async function getUserById(userId:string){
 } 
 
 
-export async function updateUser(clerkId: string,user: UpdateUserParams){
+export async function updateUser(userId: any,user: UpdateUserParams){
     try{
         await connectToDatabase()
-        const updatedUser = User.findByIdAndUpdate({_id:clerkId},user,{
+        const updatedUser = User.findByIdAndUpdate(userId,user,{
             new:true
         })
         if(!updatedUser){
@@ -64,7 +64,6 @@ export async function updateUser(clerkId: string,user: UpdateUserParams){
     }catch(err){
         handleError(err)
     }
-
 }
 
 export async function deleteUser(clerkId:string){

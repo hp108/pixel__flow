@@ -78,7 +78,7 @@ export async function POST(req: Request) {
   }
 
   if (eventType === "user.updated") {
-    const { id, image_url, first_name, last_name, username } = evt.data;
+    const { public_metadata,image_url, first_name, last_name, username } = evt.data;
 
     const user = {
       firstName: first_name!,
@@ -86,18 +86,19 @@ export async function POST(req: Request) {
       username: username!,
       photo: image_url!,
     };
+    const userId = public_metadata.userId
     console.log(evt.data)
     console.log(user)
-    const updatedUser = await updateUser(id, user);
+    const updatedUser = await updateUser(userId, user);
 
     return NextResponse.json({ message: "OK", user: updatedUser });
   }
 
   // DELETE
   if (eventType === "user.deleted") {
-    const { id } = evt.data;
-
-    const deletedUser = await deleteUser(id!);
+    const {public_metadata }= payload
+    const userId = public_metadata.userId
+    const deletedUser = await deleteUser(String(userId));
 
     return NextResponse.json({ message: "OK", user: deletedUser });
   }
