@@ -87,8 +87,6 @@ export async function POST(req: Request) {
       photo: image_url!,
     };
     const userId = public_metadata.userId
-    console.log(evt.data)
-    console.log(user)
     const updatedUser = await updateUser(userId, user);
 
     return NextResponse.json({ message: "OK", user: updatedUser });

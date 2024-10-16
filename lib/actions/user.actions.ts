@@ -66,7 +66,7 @@ export async function updateUser(userId: any,user: UpdateUserParams){
     }
 }
 
-export async function deleteUser(clerkId:string){
+export async function deleteUser(clerkId:any){
         try{
             await connectToDatabase()
             const userToDelete = User.findByIdAndDelete(clerkId)
