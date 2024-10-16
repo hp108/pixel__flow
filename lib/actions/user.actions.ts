@@ -54,7 +54,7 @@ export async function getUserById(userId:string){
 export async function updateUser(clerkId: string,user: UpdateUserParams){
     try{
         await connectToDatabase()
-        const updatedUser = User.findByIdAndUpdate({id:clerkId},user,{
+        const updatedUser = User.findByIdAndUpdate({_id:clerkId},user,{
             new:true
         })
         if(!updatedUser){
