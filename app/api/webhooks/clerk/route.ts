@@ -51,7 +51,7 @@ export async function POST(req: Request) {
   // Do something with the payload
   // For this guide, you simply log the payload to the console
   let { id  } = evt.data;
-  let { email_addresses, image_url, first_name, last_name, username } = payload
+  const  { email_addresses, image_url, first_name, last_name, username } = payload
   id = id || ""
 
 //   const body = evt.data
