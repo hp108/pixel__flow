@@ -49,7 +49,13 @@ export async function POST(req: Request) {
   // Do something with the payload
   // For this guide, you simply log the payload to the console
   const { id } = evt.data
+
 //   const body = evt.data
+if ('email_addresses' in evt.data) {
+    // Now TypeScript knows 'email_addresses' is a valid property.
+    console.log(evt.data.email_addresses);
+  }
+  
     console.log(evt.data)
 //   const { email_addresses, image_url, first_name, last_name, username } = evt.data;
   const eventType = evt.type
