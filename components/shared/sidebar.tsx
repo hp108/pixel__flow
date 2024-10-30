@@ -13,9 +13,9 @@ const Sidebar = () => {
     console.log(pathname)
   return (
     <aside className="sidebar">
-        <div className="flex side-full flex-col gap-4">
+        <div className="flex side-full flex-col">
             <Link href={'/'} className='sidebar-logo' >
-                <Image  src="/assets/images/logo-text.svg" alt='logo' width={180} height={28 } />
+                <Image  src="/assets/images/logo-text.svg" alt='logo' style={{color:'grey'}} width={200} height={30} />
             </Link>
             <nav className='sidebar-nav' >
                 <SignedIn>
