@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useState, useTransition } from 'react'
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -16,9 +16,11 @@ import {
   Form
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { aspectRatioOptions, defaultValues } from '@/constants'
+import { aspectRatioOptions, defaultValues, transformationTypes } from '@/constants'
 import { CustomField } from './CustomField'
-import { AspectRatioKey } from '@/lib/utils'
+import { AspectRatioKey, debounce, deepMergeObjects } from '@/lib/utils'
+import MediaUploader from './MediaUploader'
+import TransformedImage from './TransformedImage'
 
 
 export const formSchema = z.object({
@@ -32,13 +34,15 @@ export const formSchema = z.object({
 })
 
 const TransformationForm = ({data, action,userId,type,creditBalance,config=null}:TransformationFormProps) => {
-  // 1. Define your form.
 
+
+  const transformationType = transformationTypes[type]
   const [image, setImage] = useState(data)
   const [transformation, setTransformation] = useState<Transformations | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isTransforming, setIsTransforming] = useState(false)
   const [transformationConfig, setTransformationConfig] = useState(config)
+  const [ isPending,startTransition ]=useTransition()
   const initialValues = data && action == 'Update' ? {
     title: data?.title,
     aspectRatio: data?.aspectRatio,
@@ -51,20 +55,47 @@ const TransformationForm = ({data, action,userId,type,creditBalance,config=null}
     defaultValues: initialValues
   })
  
-  // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
+
     console.log(values)
   }
 
   const onSelectFieldHandler=( value:string,onChange:(value:string)=>void)=>{
 
+      const imageMeta = aspectRatioOptions[value as AspectRatioKey]
+      setImage((prev:any)=>({
+        ...prev,
+        aspectRatio:  imageMeta.aspectRatio,
+        width: imageMeta.width,
+        height:imageMeta.height
+      }))
+      setTransformation(transformationType.config)
+      return onChange(value);
+
+
   }
   const onInputChangeHandler = ( fieldName:string,value: string,type:string,onChange: (value: string)=> void)=>{
 
+    debounce(()=>{
+      setTransformation((prevState:any)=>( {
+        ...prevState,
+        [type]:{
+          ...prevState?.[type], 
+          [fieldName === 'prompt' ? 'prompt': 'to' ]:value  
+        }
+      }))
+    },1000) 
+
+
   }
-  const onTransformHandler = ()=>{
+  const onTransformHandler = async ()=>{
+    setIsTransforming(true)
+    setTransformationConfig( deepMergeObjects(transformation,transformationConfig)) 
+    setTransformation(null)
+    startTransition( async ()=>{
+      
+    } )
+
 
   }
 
@@ -127,6 +158,33 @@ const TransformationForm = ({data, action,userId,type,creditBalance,config=null}
           }
           </div>
         }
+
+        <div className="media-uploader-field">
+          <CustomField control={form.control} 
+            name='publicId'
+            className='flex size-full flex-col'
+            
+            render={({field})=>(
+              <MediaUploader
+                onValueChange={field.onChange}
+                setImage={setImage}
+                publicId={field.value}
+                type={type} image={image}               />
+            )} 
+          />
+
+          <TransformedImage 
+            image={image}
+            type={type}
+            title={form.getValues().title}
+            isTransforming={isTransforming}
+            setIsTransforming={setIsTransforming}
+            transformationConfig={transformationConfig}
+          />
+          
+
+        </div>
+
         <div className='flex flex-col gap-4'>
 
           <Button type="submit" className='submit-button capitalize' disabled={ isTransforming || transformation===null } onClick={onTransformHandler} >{ isTransforming ? 'Transforming...' : 'Apply Transformation' }</Button>
