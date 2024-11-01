@@ -2,7 +2,6 @@
 import React from 'react'
 import { CldImage, CldUploadWidget  } from 'next-cloudinary'
 import { useToast } from '@/hooks/use-toast'
-import { Toast } from '../ui/toast'
 import Image from 'next/image'
 import { dataUrl, getImageSize } from '@/lib/utils'
 import { PlaceholderValue } from 'next/dist/shared/lib/get-img-props'
@@ -22,23 +21,23 @@ const MediaUploader = ({
     const {toast} = useToast()
 
     const onUploadSuccessHandler =  (res:any)=>{
-        console.log(res)
         setImage((prev:any)=>({
             ...prev,
             publicId: res?.info?.public_id,
             width: res?.info?.width,
             height:res?.info?.height,
-            secureUrl: res?.info?.secure_url
+            secureURL : res?.info?.secure_url
     }))
     onValueChange(res?.info?.public_id)
         toast({
             title:"Image Uploaded Sucessfully",
             description:"1 credit deducted",
             duration:5000,
-            className:'sucess -toast'
+            className:'success-toast'
         })
     }
     const onUploadErrorHandler =  (res:any)=>{
+        console.log(res)
         toast({
             title:"Something went wrong while uploading",
             description:"Please Try Again",

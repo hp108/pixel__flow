@@ -13,13 +13,13 @@ const AddTransformationTypePage = async ({params:{type}}:SearchParamProps) => {
   if(!userId){
     redirect("/sign-in")
   }
-  let user = await getUserById(userId )
-  const user_id = user.toString("base64")
+  const user = await getUserById(userId )
+  const user_id:string = user._id.toString()
 
   return (
     <>
       <Header  title={transformation.title} subTitle={transformation.subTitle} />
-      <section className='mt-10 '  >
+      <section className='mt-10'  >
 
         <TransformationForm action="Add"  userId = {user_id}
           type={type}

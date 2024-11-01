@@ -4,7 +4,7 @@ export interface Image  extends Document{
     title:string;
     tranformation:  string;
     publicId:  string;
-    secureUrl : string;
+    secureURL : string;
     width?:number;
     height?:number;
     author: {
@@ -13,7 +13,7 @@ export interface Image  extends Document{
         lastname:string; 
     },
     config?:object;
-    transformationUrl? : string;
+    transformationURL? : string;
     aspectRation:  string;
     color?: string;
     prompt?:string;
@@ -24,13 +24,13 @@ export interface Image  extends Document{
 
 const imageSchema = new Schema({
     title:{type:String, required:true},
-    tranformationType : {type: String, required: true},
+    transformationType : {type: String, required: true},
     publicId: {type: String, required: true},
-    secureUrl : {type:String, required:true},
+    secureURL : {type:String, required:true},
     width:{type:Number},
     height:{type:Number},
     config:{type: Object},
-    transformationUrl : { type: String, required:true },
+    transformationURL : { type: String, required:true },
     aspectRation: {type: String},
     color:{type: String},
     prompt:{type:String},
