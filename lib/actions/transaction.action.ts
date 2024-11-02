@@ -1,13 +1,18 @@
+'use server'
 import { redirect } from "next/navigation";
-import Stripe  from "stripe"
+import Stripe from "stripe";
 import { handleError } from "../utils";
 import { connectToDatabase } from "../db/mongoose";
 import Transaction from "../db/models/transaction.model";
 import { updateCredits } from "./user.actions";
 
-export const checkOutCredits= (transaction : CheckoutTransactionParams)=>{
+export const checkOutCredits= async(transaction : CheckoutTransactionParams)=>{
 
-    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
+    const stripe =new Stripe(process.env.STRIPE_SECRET_KEY!)
+
+    console.log(stripe)
+
+    console.log(process.env.STRIPE_SECRET_KEY)
 
     const amount = Number(transaction.amount*100);
     const session = await stripe.checkout.sessions.create({
@@ -43,7 +48,7 @@ export const createTransaction = async(transaction : CreateTransactionParams)=>{
        })
        
        await updateCredits(transaction.buyerId,transaction.credits)
-       
+
        return JSON.parse(JSON.stringify(newTransaction))
 
     }catch(err){

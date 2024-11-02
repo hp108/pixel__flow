@@ -48,8 +48,8 @@ export async function updateImage({image, userId,path}:UpdateImageParams){
             throw new Error("Unauthorised or image not found")
          }
           console.log(image)
-          let updatedImage = image
-        //  const updatedImage = Image.findByIdAndUpdate(imageToUpdate._id,image,{new:true})
+          // const updatedImage = image
+         const updatedImage = Image.findByIdAndUpdate(imageToUpdate._id,image,{new:true})
  
         revalidatePath(path)
         return JSON.parse(JSON.stringify(updatedImage))
@@ -156,4 +156,35 @@ export async function updateImage({image, userId,path}:UpdateImageParams){
       cloudinary.api.update(publicId, 
         { categorization: "imagga_tagging", 
             auto_tagging: 0.7 })
+  }
+
+
+  export async function getUserImages({
+    limit = 9,
+    page = 1,
+    userId,
+  }: {
+    limit?: number;
+    page: number;
+    userId: string;
+  }) {
+    try {
+      await connectToDatabase();
+  
+      const skipAmount = (Number(page) - 1) * limit;
+  
+      const images = await populateUser(Image.find({ author: userId }))
+        .sort({ updatedAt: -1 })
+        .skip(skipAmount)
+        .limit(limit);
+  
+      const totalImages = await Image.find({ author: userId }).countDocuments();
+  
+      return {
+        data: JSON.parse(JSON.stringify(images)),
+        totalPages: Math.ceil(totalImages / limit),
+      };
+    } catch (error) {
+      handleError(error);
+    }
   }

@@ -3,8 +3,8 @@
 import { loadStripe } from "@stripe/stripe-js";
 import { useEffect } from "react";
 
-import { useToast } from "@/components/ui/use-toast";
-import { checkoutCredits } from "@/lib/actions/transaction.action";
+import { useToast } from "@/hooks/use-toast";
+import { checkOutCredits } from "@/lib/actions/transaction.action";
 
 import { Button } from "../ui/button";
 
@@ -45,7 +45,7 @@ const Checkout = ({
         className: "error-toast",
       });
     }
-  }, []);
+  });
 
   const onCheckout = async () => {
     const transaction = {
@@ -55,11 +55,11 @@ const Checkout = ({
       buyerId,
     };
 
-    await checkoutCredits(transaction);
+    await checkOutCredits(transaction);
   };
 
   return (
-    <form action={onCheckout} method="POST">
+    <form action={onCheckout} >
       <section>
         <Button
           type="submit"

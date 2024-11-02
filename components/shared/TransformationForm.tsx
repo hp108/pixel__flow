@@ -47,10 +47,10 @@ const TransformationForm = ({data, action,userId,type,creditBalance,config=null}
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isTransforming, setIsTransforming] = useState(false)
   const [transformationConfig, setTransformationConfig] = useState(config)
-  const [ isPending,startTransition ]=useTransition()
+  const [ isPendng,startTransition ]=useTransition()
   const router = useRouter()
 
-  console.log(data)
+  console.log(isPendng)
   const initialValues = data && action == 'Update' ? {
     title: data?.title,
     aspectRatio: data?.aspectRatio,
