@@ -90,7 +90,6 @@ const TransformationForm = ({data, action,userId,type,creditBalance,config=null}
       if(action==='Add'){
         try{
           
-          console.log("image data for asopect ratio", imageData)
           const newImage = await addImage({image:imageData,userId:userId,path:'/'}) 
 
           if(newImage){

@@ -9,11 +9,6 @@ import { updateCredits } from "./user.actions";
 export const checkOutCredits= async(transaction : CheckoutTransactionParams)=>{
 
     const stripe =new Stripe(process.env.STRIPE_SECRET_KEY!)
-
-    console.log(stripe)
-
-    console.log(process.env.STRIPE_SECRET_KEY)
-
     const amount = Number(transaction.amount*100);
     const session = await stripe.checkout.sessions.create({
         line_items:[{
@@ -35,7 +30,7 @@ export const checkOutCredits= async(transaction : CheckoutTransactionParams)=>{
        success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/profile`,
        cancel_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/`
     })
-     redirect(session.url!) 
+    redirect(session.url!) 
 }
 
 export const createTransaction = async(transaction : CreateTransactionParams)=>{

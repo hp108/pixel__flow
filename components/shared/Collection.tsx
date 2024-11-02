@@ -45,7 +45,6 @@ export const Collection = ({
     router.push(newUrl, { scroll: false });
   };
 
-  console.log(images)
 
   return (
     <>
