@@ -50,6 +50,7 @@ const TransformationForm = ({data, action,userId,type,creditBalance,config=null}
   const [ isPending,startTransition ]=useTransition()
   const router = useRouter()
 
+  console.log(data)
   const initialValues = data && action == 'Update' ? {
     title: data?.title,
     aspectRatio: data?.aspectRatio,
@@ -84,10 +85,14 @@ const TransformationForm = ({data, action,userId,type,creditBalance,config=null}
         prompt:values.prompt,
         color:values.color
       }
+
   
       if(action==='Add'){
         try{
+          
+          console.log("image data for asopect ratio", imageData)
           const newImage = await addImage({image:imageData,userId:userId,path:'/'}) 
+
           if(newImage){
             form.reset()
             setImage(data)
@@ -144,9 +149,8 @@ const TransformationForm = ({data, action,userId,type,creditBalance,config=null}
           [fieldName === 'prompt' ? 'prompt': 'to' ]:value  
         }
       }))
-    },1000) 
-
-
+    },1000)() 
+    return onChange(value)
   }
   const onTransformHandler = async ()=>{
     setIsTransforming(true)
@@ -188,9 +192,10 @@ const TransformationForm = ({data, action,userId,type,creditBalance,config=null}
         className='w-full'
         render={({field})=>{
             return(
-            <Select onValueChange={(value)=>{
+            <Select {...field} onValueChange={(value)=>{
               onSelectFieldHandler(value,field.onChange)
-            }} >
+            }} 
+            >
               <SelectTrigger className="w-[180px] select-field">
                 <SelectValue placeholder="Select Size" />
               </SelectTrigger>
@@ -211,7 +216,7 @@ const TransformationForm = ({data, action,userId,type,creditBalance,config=null}
              name='prompt'
              className='w-full'
              formLabel= {type ==='remove'?'Object to Remove' : 'Object to Recolor'}
-             render={({field})=>{
+             render={( {field})=>{
                return <Input value={field.value} onChange={(e)=>onInputChangeHandler('prompt',e.target.value,type,field.onChange)} className='input-field' />
              }}
              />
@@ -238,7 +243,7 @@ const TransformationForm = ({data, action,userId,type,creditBalance,config=null}
                 onValueChange={field.onChange}
                 setImage={setImage}
                 publicId={field.value}
-                type={type} image={image}               />
+                type={type} image={image} />
             )} 
           />
 

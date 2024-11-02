@@ -1,12 +1,14 @@
 import { model, models, Schema } from "mongoose";
 
 export interface Image  extends Document{
+    _id:string;
     title:string;
     tranformation:  string;
     publicId:  string;
     secureURL : string;
     width?:number;
     height?:number;
+    transformationType:string;
     author: {
         _id:string;
         firstname:string;
@@ -31,7 +33,7 @@ const imageSchema = new Schema({
     height:{type:Number},
     config:{type: Object},
     transformationURL : { type: String, required:true },
-    aspectRation: {type: String},
+    aspectRatio: {type: String},
     color:{type: String},
     prompt:{type:String},
     author : {type: Schema.Types.ObjectId , ref:'User'}, 
@@ -39,6 +41,6 @@ const imageSchema = new Schema({
     updatedAt:{type: Date, default : Date.now},
 })
 
-const Image = models.image ||  model('Image', imageSchema)
+const Image = models.Image ||  model('Image', imageSchema)
 
 export default Image;

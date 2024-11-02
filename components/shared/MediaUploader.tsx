@@ -5,6 +5,7 @@ import { useToast } from '@/hooks/use-toast'
 import Image from 'next/image'
 import { dataUrl, getImageSize } from '@/lib/utils'
 import { PlaceholderValue } from 'next/dist/shared/lib/get-img-props'
+import { addTags } from '@/lib/actions/image.actions'
 
 type MediaUploaderProps={
     onValueChange : (value :string)=> void,
@@ -35,6 +36,7 @@ const MediaUploader = ({
             duration:5000,
             className:'success-toast'
         })
+    addTags(res?.info?.public_id)
     }
     const onUploadErrorHandler =  (res:any)=>{
         console.log(res)
@@ -48,17 +50,18 @@ const MediaUploader = ({
 
   return (
     <div>
-        <CldUploadWidget uploadPreset='pixel_flow' 
-            options={
-                {
-                    multiple:false,
-                    resourceType:'image'
-                }
-        }
-        onSuccess={onUploadSuccessHandler}
-        onError={onUploadErrorHandler}
-        >
-            {({open})=>(
+            <CldUploadWidget
+                uploadPreset='pixel_flow'
+                options={{
+                    multiple: false,
+                    resourceType:'image',
+                }}
+                onSuccess={onUploadSuccessHandler}
+                onError={onUploadErrorHandler}
+            >
+            {({cloudinary,open})=>{
+                console.log(cloudinary)
+                return (
                 <div className='flex flex-col gap-4'>
                     <h3 className='h3-bold text-dark-600'>Original</h3>
                     {publicId ? (
@@ -81,8 +84,8 @@ const MediaUploader = ({
                                 <p className='p-14-medium'>Upload Image</p>
                         </div>
                     ) }
-                </div>
-            )}
+                </div>)
+    }}
 
         </CldUploadWidget>
     </div>
