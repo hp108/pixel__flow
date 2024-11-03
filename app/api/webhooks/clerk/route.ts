@@ -51,35 +51,35 @@ export async function POST(req: Request) {
 
   // Do something with the payload
   // For this guide, you simply log the payload to the console
-  const  { id,email_addresses, image_url, first_name, last_name } = payload.data
+  // const  { id,email_addresses, image_url, first_name, last_name } = payload.data
 
   const eventType = evt.type
   if(eventType == 'user.created'){
 
-    const user = {
-        clerkId: id || "",
-        email: email_addresses[0]?.email_address,
-        username: first_name,
-        firstName: first_name,
-        lastName: last_name,
-        photo: image_url,
-      };
+  //   const user = {
+  //       clerkId: id || "",
+  //       email: email_addresses[0]?.email_address,
+  //       username: first_name,
+  //       firstName: first_name,
+  //       lastName: last_name,
+  //       photo: image_url,
+  //     };
 
-    console.log(user)
-    await User.collection.dropIndex('username_1');  // Drops the unique index if it exists
-    const newUser = await createUser(user);
+  //   console.log(user)
+  //   await User.collection.dropIndex('username_1');  // Drops the unique index if it exists
+  //   const newUser = await createUser(user);
 
-      console.log(newUser)
-    //   Set public metadata
-      if (newUser) {
+  //     console.log(newUser)
+  //   //   Set public metadata
+  //     if (newUser) {
 
-        await clerkClient.users.updateUserMetadata(id, {
-          publicMetadata: {
-            userId: newUser?._id,
-          },
-        });
-      }
-      return NextResponse.json({ message: "OK", user: newUser });
+  //       await clerkClient.users.updateUserMetadata(id, {
+  //         publicMetadata: {
+  //           userId: newUser?._id,
+  //         },
+  //       });
+  //     }
+      return NextResponse.json({ message: "OK", user: {}});
   }
 
   if (eventType === "user.updated") {
