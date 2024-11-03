@@ -66,9 +66,6 @@ export async function POST(req: Request) {
 
     console.log(user)
     const newUser = await createUser(user);
-
-
-
       console.log(newUser)
     if (!newUser) {
       console.error("Failed to create user.");
