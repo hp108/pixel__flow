@@ -10,7 +10,6 @@ import { Button } from '../ui/button'
 
 const Sidebar = () => {
     const pathname = usePathname()
-    console.log(pathname)
   return (
     <aside className="sidebar">
         <div className="flex side-full flex-col">
