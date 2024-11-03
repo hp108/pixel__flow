@@ -1,8 +1,9 @@
 import { Webhook } from 'svix'
 import { headers } from 'next/headers'
-import { clerkClient, WebhookEvent } from '@clerk/nextjs/server'
+import { WebhookEvent,clerkClient } from '@clerk/nextjs/server'
 import { createUser, deleteUser, updateUser } from '@/lib/actions/user.actions'
 import { NextResponse } from 'next/server'
+import User from '@/lib/db/models/user.model'
 
 export async function POST(req: Request) {
 //   You can find this in the Clerk Dashboard -> Webhooks -> choose the endpoint
@@ -64,18 +65,25 @@ export async function POST(req: Request) {
         photo: image_url,
       };
 
-  //   console.log(user)
-    // await User.collection.dropIndex('username_1');  // Drops the unique index if it exists
+    console.log(user)
     const newUser = await createUser(user);
 
+
+
+      console.log(newUser)
+    if (!newUser) {
+      console.error("Failed to create user.");
+      return NextResponse.json({ message: "Failed to create user", user: {} });
+    }
       if (newUser) {
-         clerkClient.users.updateUserMetadata(id, {
+
+        await clerkClient.users.updateUserMetadata(id, {
           publicMetadata: {
             userId: newUser?._id,
           },
         });
+        return NextResponse.json({ message: "OK", user: newUser });
       }
-      return NextResponse.json({ message: "OK", user: {}});
   }
 
   if (eventType === "user.updated") {
