@@ -50,7 +50,7 @@ export async function POST(req: Request) {
 
   // Do something with the payload
   // For this guide, you simply log the payload to the console
-  const  { id,email_addresses, image_url, first_name, last_name, username } = payload.data
+  const  { id,email_addresses, image_url, first_name, last_name } = payload.data
 
   const eventType = evt.type
   if(eventType == 'user.created'){
