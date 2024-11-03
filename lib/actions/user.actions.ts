@@ -33,6 +33,7 @@ export async function createUser(user:CreateUserParams){
          const newUser =await User.create(user)
          return newUser;
     }catch(err){
+        console.log(err)
         handleError(err)
     }
 }
