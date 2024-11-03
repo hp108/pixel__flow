@@ -66,13 +66,11 @@ export async function POST(req: Request) {
       };
 
     console.log(user)
-    await User.collection.dropIndex('username_1');  // Drops the unique index if it exists
     const newUser = await createUser(user);
 
       console.log(newUser)
     //   Set public metadata
       if (newUser) {
-
         await clerkClient.users.updateUserMetadata(id, {
           publicMetadata: {
             userId: newUser?._id,
