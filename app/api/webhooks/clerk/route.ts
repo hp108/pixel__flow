@@ -3,6 +3,7 @@ import { headers } from 'next/headers'
 import { WebhookEvent,clerkClient } from '@clerk/nextjs/server'
 import { createUser, deleteUser, updateUser } from '@/lib/actions/user.actions'
 import { NextResponse } from 'next/server'
+import User from '@/lib/db/models/user.model'
 
 export async function POST(req: Request) {
 //   You can find this in the Clerk Dashboard -> Webhooks -> choose the endpoint
@@ -65,11 +66,13 @@ export async function POST(req: Request) {
       };
 
     console.log(user)
+    await User.collection.dropIndex('username_1');  // Drops the unique index if it exists
     const newUser = await createUser(user);
 
       console.log(newUser)
     //   Set public metadata
       if (newUser) {
+
         await clerkClient.users.updateUserMetadata(id, {
           publicMetadata: {
             userId: newUser?._id,
